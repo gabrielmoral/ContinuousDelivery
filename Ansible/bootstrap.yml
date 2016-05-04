@@ -1,0 +1,13 @@
+- hosts: all
+  vars:
+    root_password: "$6$rounds=656000$CO18EGq7Dlss1zYf$PHwxcirfFi6CLvPJpaLZ.ybRqu0ZxHsKs8dhABtn3IV/MouIhlPqu4ppq.UoXrwdchiXeFwtmX5NEUlgnuwv80"
+  tasks:
+  - name: change root password
+    user:
+      name=root
+      password="{{ root_password }}" #ansible
+  - name: update and updrage system
+    apt:
+      update_cache=yes
+      upgrade=dist
+  
