@@ -1,2 +1,5 @@
 .vagrant/
 *.tfstate*
+*.retry
+.vagrant
+
