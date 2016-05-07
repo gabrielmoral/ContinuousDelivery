@@ -1,0 +1,33 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+  config.vm.define "mattermost_db" do |mattermost_db|
+    mattermost_db.vm.box = "hashicorp/precise64"    
+    mattermost_db.vm.provision "ansible" do |ansible|
+      ansible.playbook = "mattermost_db.yml"
+      ansible.sudo = true
+    end
+    mattermost_db.vm.network "private_network", ip: "10.0.0.1"
+  end
+  
+  config.vm.define "mattermost" do |mattermost|
+    mattermost.vm.box = "hashicorp/precise64"    
+    mattermost.vm.provision "ansible" do |ansible|
+      ansible.playbook = "mattermost.yml"
+      ansible.sudo = true
+      # ansible.verbose = "-vvvv"
+    end
+    mattermost.vm.network "private_network", ip: "10.0.0.2"
+  end
+  
+  config.vm.define "nginx" do |nginx|
+    nginx.vm.box = "hashicorp/precise64"    
+    nginx.vm.provision "ansible" do |ansible|
+      ansible.playbook = "nginx.yml"
+      ansible.sudo = true
+    end
+    nginx.vm.network "private_network", ip: "10.0.0.3"
+  end
+end

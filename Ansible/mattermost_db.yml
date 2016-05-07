@@ -1,0 +1,6 @@
+---
+- hosts: mattermost_db
+  roles:
+    - apt
+    - postgres
+    - mattermost_db

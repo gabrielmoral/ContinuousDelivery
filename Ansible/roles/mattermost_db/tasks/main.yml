@@ -1,0 +1,38 @@
+---
+- name: create mattermost database
+  become: yes
+  become_user: postgres
+  postgresql_db: 
+    name=mattermost
+    login_user=postgres
+    
+- name: create mattermost user
+  become: yes
+  become_user: postgres
+  postgresql_user: 
+    db=mattermost 
+    name=mmuser 
+    password=mmuser_password 
+    priv=ALL
+
+- name: change listen_addresses to '*'
+  become: yes
+  lineinfile: 
+    dest=/etc/postgresql/9.1/main/postgresql.conf
+    regexp='^#?listen_addresses\s*='
+    line="listen_addresses = '*'"
+    state=present
+  notify:
+    - restart postgresql
+   
+- name: allow mattermost server to talk with postgres
+  lineinfile: 
+    dest=/etc/postgresql/9.1/main/pg_hba.conf
+    insertafter="^#sIPv4slocal.+" 
+    line="host    all             all              10.0.0.2/32            md5"
+  notify:
+    - restart postgresql
+
+             
+
+  

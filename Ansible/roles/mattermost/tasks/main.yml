@@ -1,0 +1,33 @@
+---
+- name: change root password
+  user:
+    name=root
+    password={{ root_password }} #ansible
+    
+- name: Create mattermost directory
+  file: 
+    path={{ mattermost_path }}
+    state=directory
+    owner=root
+    
+- name: copy mattermost
+  copy: 
+    src=./roles/mattermost/files/mattermost-team-2.2.0-linux-amd64.tar.gz
+    dest={{ mattermost_path }}
+ 
+- name: unzip mattermost
+  unarchive: 
+    src=./roles/mattermost/files/mattermost-team-2.2.0-linux-amd64.tar.gz
+    dest={{ mattermost_path }}
+    
+- name: Create mattermost data directory
+  file: 
+    path={{ mattermost_path }}/mattermost/data
+    state=directory    
+     
+- name: copy mattermost config file
+  copy: 
+    src=./roles/mattermost/files/config.json
+    dest={{ mattermost_path }}/mattermost/config
+    force=yes
+ 
