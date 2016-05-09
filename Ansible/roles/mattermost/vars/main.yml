@@ -1,5 +1,7 @@
 ---
-mattermost_path: /home/ubuntu
+mattermost_path: "/home/ubuntu"
+mattermost_installation_path: "{{ mattermost_path }}/platform-2.2.0"
+mattermost_config_path: "{{ mattermost_installation_path }}/config"
 root_password: "$6$rounds=656000$CO18EGq7Dlss1zYf$PHwxcirfFi6CLvPJpaLZ.ybRqu0ZxHsKs8dhABtn3IV/MouIhlPqu4ppq.UoXrwdchiXeFwtmX5NEUlgnuwv80"
 
   

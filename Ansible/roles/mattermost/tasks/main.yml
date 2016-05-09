@@ -9,16 +9,7 @@
     path={{ mattermost_path }}
     state=directory
     owner=root
-    
-# - name: copy mattermost
-#   copy: 
-#     src=./roles/mattermost/files/mattermost-team-2.2.0-linux-amd64.tar.gz
-#     dest={{ mattermost_path }}
- 
-# - name: unzip mattermost
-#   unarchive: 
-#     src=./roles/mattermost/files/mattermost-team-2.2.0-linux-amd64.tar.gz
-#     dest={{ mattermost_path }}
+   
 - name: download and install mattermost
   unarchive:
     src=https://github.com/mattermost/platform/archive/v2.2.0.tar.gz
@@ -27,12 +18,19 @@
     
 - name: Create mattermost data directory
   file: 
-    path={{ mattermost_path }}/mattermost/data
+    path={{ mattermost_installation_path }}/data
     state=directory    
-     
-- name: copy mattermost config file
-  copy: 
-    src=./roles/mattermost/files/config.json
-    dest={{ mattermost_path }}/mattermost/config
-    force=yes
+    
+- name: edit mattermost driver db
+  lineinfile:
+    dest={{ mattermost_config_path }}/config.json
+    regexp='"DriverName"{{ ':' }} "mysql",'
+    line='        "DriverName"{{ ':' }} "postgres",'
+
+- name: edit datasource db
+  lineinfile:
+    dest={{ mattermost_config_path }}/config.json
+    regexp='"DataSource"{{ ':' }}'
+    line='        "DataSource"{{ ':' }} "postgres://mmuser:mmuser_password@10.0.0.1:5432/mattermost?sslmode=disable&connect_timeout=10",'
+
  
