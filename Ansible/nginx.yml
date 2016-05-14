@@ -1,4 +1,5 @@
 ---
 - hosts: nginx
   roles:
+    - apt
     - nginx
